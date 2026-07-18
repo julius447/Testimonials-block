@@ -44,9 +44,9 @@ body {
 .testimonial-a__header { text-align: center; max-width: 72rem; margin: 0 auto var(--apspace-l); }
 .testimonial-a__heading {
   margin: 0 0 var(--apspace-2xs);
-  /* ~+3px mot aptext-2xl (36 → 39 på desktop), finslipad vikt 500 */
-  font-size: clamp(2.7rem, calc(1.11vw + 2.3rem), 3.9rem);
-  font-weight: 500;
+  /* runda 3: lite mindre + lättare (36px max, vikt 400) */
+  font-size: var(--aptext-2xl);
+  font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.15;
   color: var(--apmidnight-blue);
@@ -143,9 +143,10 @@ body {
 /* --- Mobil ≤640: ingen subline, större finslipad rubrik, tätare kort --- */
 @media (max-width: 640px) {
   .testimonial-a { padding: var(--apspace-xl) var(--apspace-s); }
-  .testimonial-a__heading { font-size: clamp(2.5rem, 7vw, 2.9rem); font-weight: 500; }
+  /* runda 3: lite mindre + lättare rubrik, mer luft ner mot korten */
+  .testimonial-a__heading { font-size: clamp(2.3rem, 6.4vw, 2.7rem); font-weight: 400; }
   .testimonial-a__subline { display: none; }
-  .testimonial-a__header { margin-bottom: var(--apspace-m); }
+  .testimonial-a__header { margin-bottom: 3.2rem; }
   .card { min-height: 288px; }
   .card__body { padding: var(--apspace-xs) 0; }
   .rating-badge__stars svg { width: 17px; height: 17px; }
@@ -194,15 +195,18 @@ body {
 /* ÄKTA Google-recensioner, ordagrant ur ägarens fullständiga lista 2026-07-19.
    Fulla namn = Google-profilnamnen. Datum = månad härledd ur Googles relativa
    tidsstämpel ("4 months ago" vid 2026-07-19 → mars 2026) — spot-checka vid go-live.
-   Utelämnade med text: Jan Fernström (texten avklippt i listan, [GAP] fulltext),
-   Niklas Savic + Leon Russo (för långa för kortet), Jonas ("Gediget arbete och
-   trevliga" är hela recensionen — utelämnad som kurering), Axel ("super nöjd!" för tunn),
-   AK Athlete + Andrew Broumana (reserv). OBS: Thomas/Kristoffer/Maria från gamla
-   sajt-listan finns INTE bland Google-recensionerna och är därför borttagna. */
+   Jan Fernström tillagd (fulltext från ägaren 2026-07-19; styckebrytningar
+   sammanfogade till löpande text, orden ordagranna).
+   Utelämnade med text: Niklas Savic + Leon Russo (för långa för kortet),
+   Jonas ("Gediget arbete och trevliga" är hela recensionen — kurering),
+   Axel ("super nöjd!" för tunn), AK Athlete + Andrew Broumana + Daniel Nilsson
+   (reserv). OBS: Thomas/Kristoffer/Maria från gamla sajt-listan finns INTE
+   bland Google-recensionerna och är därför borttagna. */
 const REVIEWS = [
   { name: "Filip Eriksson", text: "Blev rekommenderad av en granne att gå via Ampy. Är otroligt nöjd med det valet.", date: "mars 2026" },
-  { name: "Mohammed Abduljaleel", text: "Kan verkligen rekommendera Ampy. Trevlig kontakt, punktliga och noggranna. Arbetet blev riktigt bra och priset var rimligt. Kommer definitivt att anlita dom igen i framtiden.", date: "juni 2026" },
+  { name: "Jan Fernström", text: "Ampy visade sig i konkurrens med andra aktörer både kunnigare och billigare. Genomförandet av offererat arbete skedde inom utlovad tid snabbt och utan problem. Följdfrågor som uppstått efter en tids användning har besvarats kunnigt och utan dröjsmål.", date: "juni 2026" },
   { name: "Daniel Hellström", text: "Professionell firma! Oskar gjorde ett kanonjobb på uppfarten, var en annan firma här tidigare men dem klarade inte av det.", date: "mars 2026" },
+  { name: "Mohammed Abduljaleel", text: "Kan verkligen rekommendera Ampy. Trevlig kontakt, punktliga och noggranna. Arbetet blev riktigt bra och priset var rimligt. Kommer definitivt att anlita dom igen i framtiden.", date: "juni 2026" },
   { name: "Alexandra Kamona", text: "Vi är supernöjda med de som installerade vår elbox! Väldigt proffsiga och trevliga att ha att göra med. Rekommenderas varmt!", date: "maj 2026" },
   { name: "Mathias Franzen", text: "Sökte en helhetslösning för hembatteri. Ampy levererade över förväntan. Snabbt, smidigt och tryggt!", date: "mars 2026" },
   { name: "Moa Olaussen", text: "Snabb hjälp när elcentralen strulade. Ampy dök upp direkt och löste allt med högsta precision. Rekommenderas!", date: "mars 2026" },
@@ -210,12 +214,11 @@ const REVIEWS = [
   { name: "Hugo Grafström Olsson", text: "Från start till mål levererades en service i världsklass!", date: "mars 2026" },
   { name: "Josephine Lundqvist", text: "Fick hjälp med belysningen i hela lägenheten under min renovering. Väldigt nöjd.", date: "maj 2026" },
   { name: "dany Hanna", text: "Supernöjd, bra gäng, trevliga pålitliga och snabba.", date: "juni 2026" },
-  { name: "Adam Andersson", text: "Proffsig rådgivning inför vår installation. Känns tryggt att anlita experter.", date: "mars 2026" },
-  { name: "Daniel Nilsson", text: "Tack för ett utmärkt jobb mycket nöjd", date: "juni 2026" }
+  { name: "Adam Andersson", text: "Proffsig rådgivning inför vår installation. Känns tryggt att anlita experter.", date: "mars 2026" }
 ];
 
 /* Mobil: 4 kurerade (samma spridning ägaren sett: granne / tjänst / batteri / elcentral) */
-const MOBILE_INDICES = [0, 2, 4, 5]; // Filip Eriksson, Daniel Hellström, Mathias Franzen, Moa Olaussen
+const MOBILE_INDICES = [0, 2, 5, 6]; // Filip Eriksson, Daniel Hellström, Mathias Franzen, Moa Olaussen
 
 const STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>';
 const slideHTML = r => `
@@ -241,7 +244,7 @@ const slideHTML = r => `
 
 const list = document.querySelector('.splide__list');
 const sliderEl = document.getElementById('review-slider');
-const INTERVAL = 5000, SPEED = 500;
+const INTERVAL = 4000, SPEED = 500; /* runda 3: lite snabbare tempo */
 sliderEl.style.setProperty('--page-duration', (INTERVAL + SPEED) + 'ms');
 
 const restart = () => {
@@ -276,12 +279,13 @@ function build() {
   if (splide) splide.destroy(true);
   list.innerHTML = data.map(slideHTML).join('');
   splide = new Splide(sliderEl, {
-    /* perMove = perPage → prickar, kortförflyttning och progress-bar synkar 1:1 */
-    type: 'slide', perPage: mobile ? 1 : 3, perMove: mobile ? 1 : 3, gap: '24px',
+    /* runda 3 ägar-direktiv: byt 1 kort i taget (perMove 1), snabbare tempo.
+       Prickarna grupperar per sida; progress-baren startar om per byte = rytmen stämmer. */
+    type: 'slide', perPage: mobile ? 1 : 3, perMove: 1, gap: '24px',
     autoplay: !reduce, interval: INTERVAL, speed: SPEED,
     pauseOnHover: true, rewind: true, arrows: false, pagination: true,
     mediaQuery: 'max', i18n: I18N,
-    breakpoints: mobile ? {} : { 1024: { perPage: 2, perMove: 2 } }
+    breakpoints: mobile ? {} : { 1024: { perPage: 2, perMove: 1 } }
   }).mount();
   splide.on('move', restart);
   restart();
