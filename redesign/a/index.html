@@ -11,19 +11,24 @@
 <link rel="stylesheet" href="../shared/splide.css">
 <style>
 /* ============================================================
-   VERSION A — slutversion (ägar-feedback 2026-07-19, runda 2)
-   - Rubrik: vikt 500 (finslipad, mindre bold) + ~3px större desktop,
-     lite större mobil. Svart.
-   - Badge: ingen mörk platta — guldstjärnor + svart text, transparent.
-   - Mobil (≤640): ingen subline, 4 kurerade omdömen.
-   - Tablet (641–1024): FULLT set, 2 kort per sida (fixar den svaga
-     mellanzonen där mobil-bygget läckte upp till surfplattebredd).
-   - Recensionsdata: ENDAST äkta Google-recensioner (ägarens fullständiga
-     lista 2026-07-19), fulla namn, ordagranna citat, månadsdatum härledda
-     ur Googles relativa tidsstämplar.
-   ⚑ Betyg 5,0 · 27 recensioner ägar-bekräftat 2026-07-19 (bifogat 1).
-   ⚑ En av de 27 är 4★ (ej namngiven) — bekräfta att ingen av de VISADE
-     recensionerna är den innan go-live (alla visas som 5★).
+   VERSION A — slutversion (ägar-feedback 2026-07-19, runda 4)
+   Rubrik svart vikt 400 (mindre bold). Subline dold ≤759 (kompakt 1-upp).
+   Citat centrerat, 17–19px. Badge = guldstjärnor + svart text, LÄNKAD till
+   Google-profilen (ny flik). 12 äkta Google-recensioner (Jan Fernström #2).
+
+   ANIMATION (rundan 4, efter robusthet/animations-granskning):
+   - Progress-baren är NU en egen tunn linje under slidern, INTE på prickarna.
+     Skäl: perMove=1 (byt 1 kort i taget, ägar-låst) gör att sid-pricken bara
+     byter var 3:e slide (desktop), medan baren ska följa VARJE kortbyte.
+     Linjen fylls 0→1 per autoplay-intervall och nollställs vid varje 'move'
+     → "tid till nästa kort", hänger alltid med. Prickarna = ren position.
+   - Baren drivs av Splides VERKLIGA timer ('autoplay:playing' rate 0→1),
+     inte en gissad CSS-varaktighet → kan aldrig drifta/snäppa. rAF-fallback
+     om eventet skulle saknas. resetProgress:false → sömlös återupptagning
+     efter hover-paus.
+
+   ⚑ Betyg 5,0 · 27 recensioner ägar-bekräftat 2026-07-19.
+   ⚑ En av de 27 är 4★ (ej namngiven) — bekräfta att ingen VISAD är den (alla 5★).
    ============================================================ */
 html { font-size: 62.5%; box-sizing: border-box; }
 *, *::before, *::after { box-sizing: inherit; }
@@ -44,8 +49,7 @@ body {
 .testimonial-a__header { text-align: center; max-width: 72rem; margin: 0 auto var(--apspace-l); }
 .testimonial-a__heading {
   margin: 0 0 var(--apspace-2xs);
-  /* runda 3: lite mindre + lättare (36px max, vikt 400) */
-  font-size: var(--aptext-2xl);
+  font-size: var(--aptext-2xl);   /* 36px max, vikt 400 = mindre bold */
   font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.15;
@@ -65,6 +69,7 @@ body {
 /* --- Kortet (låst DNA; citat centrerat, 17–19px) --- */
 :root { --card-text-size: clamp(1.7rem, calc(0.21vw + 1.63rem), 1.9rem); }
 .card {
+  margin: 0;
   display: flex; flex-direction: column;
   min-height: 360px; height: 100%;
   padding: var(--apspace-m) var(--apspace-m) var(--apspace-l);
@@ -101,62 +106,66 @@ body {
 .card__stars svg { width: 15px; height: 15px; fill: var(--apneon-mint); }
 .card__date { margin-left: auto; font-size: var(--aptext-xs); font-weight: 400; color: rgba(255, 255, 255, 0.72); }
 
-/* --- Paginering + progress-bar --- */
-.testimonial-a .splide__pagination { position: static; transform: none; left: auto; margin-top: var(--apspace-s); gap: 0.8rem; padding: 0.6rem 0; justify-content: center; }
+/* --- Prickar = REN positionsmarkör (ingen progress-fyllning längre) --- */
+.testimonial-a .splide__pagination { position: static; transform: none; left: auto; margin-top: var(--apspace-2xs); gap: 0.8rem; padding: 0.6rem 0; justify-content: center; }
 .testimonial-a .splide__pagination__page {
   width: 2.4rem; height: 0.6rem; border-radius: var(--apradius-full);
   background: #c7d3eb; border: none; opacity: 1; transform: none;
   transition: width .3s ease, background-color .3s ease;
-  position: relative; overflow: visible; cursor: pointer;
-  padding: 0; margin: 0;
+  position: relative; cursor: pointer; padding: 0; margin: 0;
 }
-/* Osynligt träffområde ≥44px (WCAG 2.5.8) utan att ändra den synliga stapeln */
+/* Osynligt träffområde ≥44px (WCAG 2.5.8) */
 .testimonial-a .splide__pagination__page::before {
-  content: ""; position: absolute; inset: -1.9rem 0; z-index: 1;
+  content: ""; position: absolute; inset: -1.9rem 0;
 }
-.testimonial-a .splide__pagination__page.is-active { width: 4.4rem; background: #cfe9d9; }
-.testimonial-a .splide__pagination__page.is-active::after {
-  content: ""; position: absolute; inset: 0; width: 100%;
-  border-radius: inherit;
+.testimonial-a .splide__pagination__page.is-active { width: 4.4rem; background: #00ad48; }
+
+/* --- Progress-linje: egen "tid till nästa kort", frame-exakt via JS --rate.
+       Sitter direkt under korten (ovanför prickarna via JS-omflytt). --- */
+.testimonial-a__progress {
+  width: 13rem; height: 0.4rem; margin: var(--apspace-s) auto 0;
+  background: #dbe4f2; border-radius: var(--apradius-full); overflow: hidden;
+}
+.testimonial-a__progress-fill {
+  display: block; width: 100%; height: 100%;
   background: linear-gradient(90deg, var(--brightgreen), #00ad48);
   transform: scaleX(0); transform-origin: left center;
-  animation: pageLoad var(--page-duration, 5500ms) linear forwards;
+  will-change: transform;
 }
-.testimonial-a .splide__pagination__page.is-active.paused::after { animation-play-state: paused; }
-@keyframes pageLoad { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
-/* --- Google-betyg: guldstjärnor + svart text, ingen platta --- */
-.testimonial-a__rating { display: flex; justify-content: center; margin-top: var(--apspace-m); }
+/* --- Google-betyg: guldstjärnor + svart text, LÄNKAD, ≥44px träffyta --- */
+.testimonial-a__rating { display: flex; justify-content: center; margin-top: var(--apspace-s); }
 .rating-badge {
   display: inline-flex; align-items: center; gap: 1.1rem;
+  min-height: 44px; padding: 0.8rem 1.2rem;
   text-decoration: none; color: inherit; cursor: pointer;
 }
 .rating-badge:hover .rating-badge__text { text-decoration: underline; text-underline-offset: 4px; }
 .rating-badge__stars { display: inline-flex; gap: 0.4rem; }
 .rating-badge__stars svg { width: 18px; height: 18px; fill: #fbbc04; }
 .rating-badge__text { font-size: var(--aptext-m); font-weight: 300; color: var(--apmidnight-blue); white-space: nowrap; }
-.rating-badge__text strong { font-weight: 600; }
+.rating-badge__text strong { font-weight: 600; margin-right: 0.9rem; }
 
-/* --- Tablet 641–1024: fullt set, 2-upp, lätt nedtonad kortstorlek --- */
-@media (max-width: 1024px) and (min-width: 641px) {
+/* --- Tablet 760–1024: fullt set, 2-upp (kort ~348px ≈ telefonkort, ingen inversion) --- */
+@media (max-width: 1024px) and (min-width: 760px) {
   .testimonial-a { padding: var(--apspace-xl) var(--apspace-m); }
   .card { min-height: 340px; }
 }
 
-/* --- Mobil ≤640: ingen subline, större finslipad rubrik, tätare kort --- */
-@media (max-width: 640px) {
+/* --- Kompakt 1-upp ≤759 (telefoner + små surfplattor): ingen subline, lättare
+       rubrik, kort cappat så det inte blir en "billboard" på breda telefoner --- */
+@media (max-width: 759px) {
   .testimonial-a { padding: var(--apspace-xl) var(--apspace-s); }
-  /* runda 3: lite mindre + lättare rubrik, mer luft ner mot korten */
   .testimonial-a__heading { font-size: clamp(2.3rem, 6.4vw, 2.7rem); font-weight: 400; }
   .testimonial-a__subline { display: none; }
   .testimonial-a__header { margin-bottom: 3.2rem; }
-  .card { min-height: 288px; }
+  /* 1-upp: fullbredds-kort (Splide räknar bredden själv, ingen peek, robust
+     mot Splides translate). Håll höjden tajt så breda telefoner/små plattor
+     inte får ett tomt "billboard"-kort. */
+  .card { min-height: 300px; }
   .card__body { padding: var(--apspace-xs) 0; }
   .rating-badge__stars svg { width: 17px; height: 17px; }
   .rating-badge__text { font-size: var(--aptext-sm); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .testimonial-a .splide__pagination__page.is-active::after { animation: none; }
 }
 </style>
 </head>
@@ -176,8 +185,10 @@ body {
       </div>
     </div>
 
-    <!-- Google-betyg. 5,0 · 27 recensioner ägar-bekräftat 2026-07-19.
-         Länkar till Ampys Google-profil (samma URL som sajten använder), ny flik. -->
+    <!-- Progress-linje (tid till nästa kort). aria-hidden: ren dekor. -->
+    <div class="testimonial-a__progress" aria-hidden="true"><span class="testimonial-a__progress-fill"></span></div>
+
+    <!-- Google-betyg, LÄNKAD till Ampys Google-profil (samma URL som sajten). -->
     <div class="testimonial-a__rating">
       <a class="rating-badge"
          href="https://www.google.com/maps/place/Ampy/@59.3576299,17.9842061,17z/data=!3m1!4b1!4m6!3m5!1s0x2bec1ce5c4ed9ce9:0xfce1752e84a1bfee!8m2!3d59.3576272!4d17.986781!16s%2Fg%2F11ypjy9rrm"
@@ -189,7 +200,7 @@ body {
           <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
           <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
         </span>
-        <span class="rating-badge__text"><strong>5 av 5</strong> Betyg på Google</span>
+        <span class="rating-badge__text"><strong>5 av 5</strong>Betyg på Google</span>
       </a>
     </div>
 
@@ -199,15 +210,12 @@ body {
 <script src="../shared/splide.min.js"></script>
 <script>
 /* ÄKTA Google-recensioner, ordagrant ur ägarens fullständiga lista 2026-07-19.
-   Fulla namn = Google-profilnamnen. Datum = månad härledd ur Googles relativa
-   tidsstämpel ("4 months ago" vid 2026-07-19 → mars 2026) — spot-checka vid go-live.
-   Jan Fernström tillagd (fulltext från ägaren 2026-07-19; styckebrytningar
-   sammanfogade till löpande text, orden ordagranna).
-   Utelämnade med text: Niklas Savic + Leon Russo (för långa för kortet),
-   Jonas ("Gediget arbete och trevliga" är hela recensionen — kurering),
-   Axel ("super nöjd!" för tunn), AK Athlete + Andrew Broumana + Daniel Nilsson
-   (reserv). OBS: Thomas/Kristoffer/Maria från gamla sajt-listan finns INTE
-   bland Google-recensionerna och är därför borttagna. */
+   Fulla profilnamn; datum = månad härledd ur Googles relativa tidsstämpel
+   (spot-checka vid go-live). Jan Fernström #2 (fulltext från ägaren).
+   Utelämnade (kurering): Niklas Savic + Leon Russo (för långa), Jonas
+   ("Gediget arbete och trevliga" = hela recensionen), Axel ("super nöjd!"),
+   Daniel Nilsson/AK Athlete/Andrew Broumana (reserv). Thomas/Kristoffer/Maria
+   fanns EJ bland Google-recensionerna → borttagna. */
 const REVIEWS = [
   { name: "Filip Eriksson", text: "Blev rekommenderad av en granne att gå via Ampy. Är otroligt nöjd med det valet.", date: "mars 2026" },
   { name: "Jan Fernström", text: "Ampy visade sig i konkurrens med andra aktörer både kunnigare och billigare. Genomförandet av offererat arbete skedde inom utlovad tid snabbt och utan problem. Följdfrågor som uppstått efter en tids användning har besvarats kunnigt och utan dröjsmål.", date: "juni 2026" },
@@ -223,13 +231,13 @@ const REVIEWS = [
   { name: "Adam Andersson", text: "Proffsig rådgivning inför vår installation. Känns tryggt att anlita experter.", date: "mars 2026" }
 ];
 
-/* Mobil: 4 kurerade (samma spridning ägaren sett: granne / tjänst / batteri / elcentral) */
-const MOBILE_INDICES = [0, 2, 5, 6]; // Filip Eriksson, Daniel Hellström, Mathias Franzen, Moa Olaussen
+/* Kompakt vy (≤759): 4 kurerade (granne / tjänst / batteri / elcentral) → 4 prickar */
+const MOBILE_INDICES = [0, 2, 5, 6]; // Filip, Daniel, Mathias, Moa
 
 const STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>';
 const slideHTML = r => `
   <li class="splide__slide">
-    <figure class="card" style="margin:0">
+    <figure class="card">
       <div class="card__top">
         <span class="card__quote-mark" aria-hidden="true">“</span>
         <img class="card__google" src="../shared/google-g.svg" alt="Google-omdöme">
@@ -250,22 +258,20 @@ const slideHTML = r => `
 
 const list = document.querySelector('.splide__list');
 const sliderEl = document.getElementById('review-slider');
-const INTERVAL = 4000, SPEED = 500; /* runda 3: lite snabbare tempo */
-sliderEl.style.setProperty('--page-duration', (INTERVAL + SPEED) + 'ms');
+const fill = document.querySelector('.testimonial-a__progress-fill');
+const INTERVAL = 4000, SPEED = 500;
 
-const restart = () => {
-  const b = sliderEl.querySelector('.splide__pagination__page.is-active');
-  if (!b) return;
-  b.style.animation = 'none'; void b.offsetWidth; b.style.animation = '';
-};
-sliderEl.addEventListener('mouseenter', () => {
-  const b = sliderEl.querySelector('.splide__pagination__page.is-active');
-  if (b) b.classList.add('paused');
-});
-sliderEl.addEventListener('mouseleave', () => {
-  const b = sliderEl.querySelector('.splide__pagination__page.is-active');
-  if (b) b.classList.remove('paused');
-});
+const mq = window.matchMedia('(max-width: 759px)');
+const reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+const perfNow = () => (window.performance && performance.now) ? performance.now() : Date.now();
+
+/* Progress-linjen: en enda fill-nod, scaleX(rate). */
+let curRate = 0;
+const setRate = r => { curRate = Math.max(0, Math.min(1, r)); fill.style.transform = 'scaleX(' + curRate + ')'; };
+
+let playingEventSeen = false;   // Splide-timern driver → strunta i fallback
+let paused = false;             // hover-paus (endast för fallback-loopen)
+let cycleStart = 0;             // fallback-timerns nollpunkt
 
 /* Svenska etiketter för Splides paginering/knappar */
 const I18N = {
@@ -276,28 +282,65 @@ const I18N = {
 };
 
 let splide = null;
-const mq = window.matchMedia('(max-width: 640px)');
 
 function build() {
   const mobile = mq.matches;
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduce = reduceMQ.matches;
   const data = mobile ? MOBILE_INDICES.map(i => REVIEWS[i]) : REVIEWS;
   if (splide) splide.destroy(true);
   list.innerHTML = data.map(slideHTML).join('');
   splide = new Splide(sliderEl, {
-    /* runda 3 ägar-direktiv: byt 1 kort i taget (perMove 1), snabbare tempo.
-       Prickarna grupperar per sida; progress-baren startar om per byte = rytmen stämmer. */
     type: 'slide', perPage: mobile ? 1 : 3, perMove: 1, gap: '24px',
     autoplay: !reduce, interval: INTERVAL, speed: SPEED,
-    pauseOnHover: true, rewind: true, arrows: false, pagination: true,
+    pauseOnHover: true, pauseOnFocus: true, resetProgress: false,
+    rewind: true, arrows: false, pagination: true,
     mediaQuery: 'max', i18n: I18N,
-    breakpoints: mobile ? {} : { 1024: { perPage: 2, perMove: 1 } }
+    breakpoints: mobile ? {} : { 1024: { perPage: 2 } }
   }).mount();
-  splide.on('move', restart);
-  restart();
+
+  /* Flytta pagineringen (prickarna) NER under progress-linjen så ordningen blir
+     kort → tunn tid-linje → positions-prickar → badge (linjen hugger korten). */
+  const pag = sliderEl.querySelector('.splide__pagination');
+  const progEl = document.querySelector('.testimonial-a__progress');
+  if (pag && progEl) progEl.after(pag);
+
+  setRate(0);
+  cycleStart = perfNow();
+
+  /* Nollställ linjen vid varje kortbyte + starta om fallback-cykeln */
+  splide.on('move', () => { setRate(0); cycleStart = perfNow(); });
+
+  /* Primär: Splides egen timer-rate (frame-exakt). Ingen paus-gate här —
+     eventet fyras per definition bara medan autoplay faktiskt spelar, så
+     en tappad hover-leave kan aldrig frysa linjen. */
+  splide.on('autoplay:playing', rate => { playingEventSeen = true; setRate(rate); });
+
+  if (reduce) setRate(1); /* statisk full linje när autoplay är av */
 }
 
+/* Hover-paus enbart för fallback-loopen (matchar Splides egen mouseenter/leave-familj) */
+sliderEl.addEventListener('mouseenter', () => { paused = true; });
+sliderEl.addEventListener('mouseleave', () => { paused = false; cycleStart = perfNow() - curRate * (INTERVAL + SPEED); });
+
+/* Fallback-loop: driver linjen ENDAST om 'autoplay:playing' aldrig setts.
+   Slutar schemalägga sig själv så fort primärvägen bekräftats (ingen evig CPU). */
+function rafTick() {
+  if (playingEventSeen) return;                 // primärvägen tog över → sluta
+  if (splide && !paused && !reduceMQ.matches) {
+    setRate((perfNow() - cycleStart) / (INTERVAL + SPEED));
+  }
+  requestAnimationFrame(rafTick);
+}
+requestAnimationFrame(rafTick);
+
+/* Snyggare återkomst efter flikbyte: nollställ cykeln (annars ett engångshopp) */
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && splide) { setRate(0); cycleStart = perfNow(); }
+});
+
+/* Bygg om vid brytpunktsbyte (kompakt↔fullt) och vid reduced-motion-växling */
 mq.addEventListener('change', build);
+reduceMQ.addEventListener('change', build);
 build();
 </script>
 </body>
