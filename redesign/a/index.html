@@ -127,12 +127,15 @@ body {
 
 /* --- Google-betyg: guldstjärnor + svart text, ingen platta --- */
 .testimonial-a__rating { display: flex; justify-content: center; margin-top: var(--apspace-m); }
-.rating-badge { display: inline-flex; align-items: center; gap: 1.1rem; }
+.rating-badge {
+  display: inline-flex; align-items: center; gap: 1.1rem;
+  text-decoration: none; color: inherit; cursor: pointer;
+}
+.rating-badge:hover .rating-badge__text { text-decoration: underline; text-underline-offset: 4px; }
 .rating-badge__stars { display: inline-flex; gap: 0.4rem; }
 .rating-badge__stars svg { width: 18px; height: 18px; fill: #fbbc04; }
 .rating-badge__text { font-size: var(--aptext-m); font-weight: 300; color: var(--apmidnight-blue); white-space: nowrap; }
 .rating-badge__text strong { font-weight: 600; }
-.rating-badge__sep { margin: 0 0.5rem; opacity: 0.45; }
 
 /* --- Tablet 641–1024: fullt set, 2-upp, lätt nedtonad kortstorlek --- */
 @media (max-width: 1024px) and (min-width: 641px) {
@@ -173,9 +176,12 @@ body {
       </div>
     </div>
 
-    <!-- Google-betyg. 5,0 · 27 recensioner ägar-bekräftat 2026-07-19. -->
+    <!-- Google-betyg. 5,0 · 27 recensioner ägar-bekräftat 2026-07-19.
+         Länkar till Ampys Google-profil (samma URL som sajten använder), ny flik. -->
     <div class="testimonial-a__rating">
-      <span class="rating-badge">
+      <a class="rating-badge"
+         href="https://www.google.com/maps/place/Ampy/@59.3576299,17.9842061,17z/data=!3m1!4b1!4m6!3m5!1s0x2bec1ce5c4ed9ce9:0xfce1752e84a1bfee!8m2!3d59.3576272!4d17.986781!16s%2Fg%2F11ypjy9rrm"
+         target="_blank" rel="noopener" aria-label="Läs Ampys omdömen på Google, öppnas i ny flik">
         <span class="rating-badge__stars" role="img" aria-label="5 av 5 stjärnor">
           <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
           <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
@@ -183,8 +189,8 @@ body {
           <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
           <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
         </span>
-        <span class="rating-badge__text"><strong>5 av 5</strong><span class="rating-badge__sep">·</span>Betyg på Google</span>
-      </span>
+        <span class="rating-badge__text"><strong>5 av 5</strong> Betyg på Google</span>
+      </a>
     </div>
 
   </div>
