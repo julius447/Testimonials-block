@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="sv-SE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ampy Testimonials — Version C: Väggen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/tokens.css">
+<style>
+/* ============================================================
+   VERSION C — "Väggen"
+   Ingen karusell-mekanik: två långsamt drivande rader (marquee,
+   motsatta riktningar, paus på hover) visar ALLA omdömen över tid.
+   Ingen paginering behövs = inget som ljuger om position.
+   Rubrik vänster + proof-kolumn höger (desktop), staplat på mobil.
+   Kompaktare kort med samma Ampy-DNA.
+   prefers-reduced-motion: raderna blir statiska scrollbara rader.
+   ⚑ [GAP] Datum är PLATSHÅLLARE tills riktiga Google-datum bekräftats.
+   ============================================================ */
+html { font-size: 62.5%; box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+body {
+  margin: 0;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  font-size: var(--aptext-sm);
+  background: var(--color-2, hsl(216 100% 98%));
+  color: var(--apmidnight-blue);
+  -webkit-font-smoothing: antialiased;
+}
+
+.testimonial-c { padding: var(--apspace-2xl) 0; overflow: hidden; }
+
+/* --- Header: rubrik vänster, proof höger --- */
+.testimonial-c__header {
+  max-width: 1200px; margin: 0 auto var(--apspace-l);
+  padding: 0 var(--apspace-m);
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: var(--apspace-m); flex-wrap: wrap;
+}
+.testimonial-c__heading {
+  margin: 0 0 var(--apspace-3xs);
+  font-size: var(--aptext-2xl); font-weight: 600; line-height: 1.15;
+  color: var(--apmidnight-blue); max-width: 56rem;
+}
+.testimonial-c__heading .hl {
+  background: linear-gradient(90deg, var(--brightgreen), var(--color-5));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.testimonial-c__subline { margin: 0; font-size: var(--aptext-m); color: rgba(9, 11, 50, 0.68); }
+.testimonial-c__proof { text-align: right; }
+.testimonial-c__proof .stars { display: inline-flex; gap: 0.3rem; margin-bottom: 0.6rem; }
+.testimonial-c__proof .stars svg { width: 17px; height: 17px; fill: var(--color-5); }
+.testimonial-c__proof-src {
+  display: flex; align-items: center; justify-content: flex-end; gap: 0.8rem;
+  font-size: var(--aptext-sm); font-weight: 400; color: rgba(9, 11, 50, 0.8);
+}
+.testimonial-c__proof-src img { width: 16px; height: 16px; }
+.testimonial-c__proof-link {
+  display: inline-block; margin-top: 0.4rem;
+  font-size: var(--aptext-sm); font-weight: 500;
+  color: var(--color-5); text-decoration: underline; text-underline-offset: 3px;
+}
+.testimonial-c__proof-link:hover { color: var(--apteal-core); }
+
+/* --- Marquee-raderna --- */
+.wall { display: grid; gap: var(--apspace-s); }
+.wall__row { overflow: hidden; position: relative; }
+.wall__track {
+  display: flex; gap: var(--apspace-s); width: max-content;
+  animation: drift var(--drift-duration, 70s) linear infinite;
+}
+.wall__row--reverse .wall__track { animation-direction: reverse; }
+.wall__row:hover .wall__track { animation-play-state: paused; }
+@keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* --- Kompakt kort, samma DNA --- */
+.card {
+  width: 380px; flex: 0 0 auto;
+  display: flex; flex-direction: column;
+  padding: var(--apspace-s) var(--apspace-m);
+  border-radius: var(--radius);
+  background: linear-gradient(-27deg, #0b0f30 0%, #2d516d 60%);
+  color: #fff;
+  box-shadow: 0 0 16px 0 rgba(190, 190, 190, 0.14);
+}
+.card__head { display: flex; align-items: baseline; gap: 1rem; margin-bottom: var(--apspace-3xs); }
+.card__name { margin: 0; font-size: var(--aptext-m); font-weight: 600; }
+.card__date { font-size: var(--aptext-xs); font-weight: 300; color: rgba(255, 255, 255, 0.55); }
+.card__google { margin-left: auto; width: 18px; height: 18px; align-self: center; }
+.card__text {
+  margin: 0 0 var(--apspace-2xs);
+  font-size: var(--aptext-sm); font-weight: 300; line-height: 1.55;
+  color: rgba(255, 255, 255, 0.94);
+}
+.card__stars { display: inline-flex; gap: 0.3rem; margin-top: auto; }
+.card__stars svg { width: 13px; height: 13px; fill: var(--apneon-mint); }
+
+/* Kant-fade så raderna tonar ut mot sektionens kanter */
+.wall__row::before, .wall__row::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 8rem; z-index: 2; pointer-events: none;
+}
+.wall__row::before { left: 0; background: linear-gradient(90deg, var(--color-2, hsl(216 100% 98%)), transparent); }
+.wall__row::after { right: 0; background: linear-gradient(-90deg, var(--color-2, hsl(216 100% 98%)), transparent); }
+
+@media (max-width: 820px) {
+  .testimonial-c { padding: var(--apspace-xl) 0; }
+  .testimonial-c__header { flex-direction: column; align-items: flex-start; padding: 0 var(--apspace-s); }
+  .testimonial-c__heading { font-size: var(--aptext-xl); }
+  .testimonial-c__proof { text-align: left; }
+  .testimonial-c__proof-src { justify-content: flex-start; }
+  .card { width: 300px; }
+  .wall__row::before, .wall__row::after { width: 2.4rem; }
+}
+
+/* Reduced motion: statiska scrollbara rader i stället för drift */
+@media (prefers-reduced-motion: reduce) {
+  .wall__track { animation: none; }
+  .wall__row { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+</style>
+</head>
+<body>
+
+<section class="testimonial-c" aria-label="Omdömen från Ampys kunder">
+
+  <header class="testimonial-c__header">
+    <div>
+      <h2 class="testimonial-c__heading">Vad säger dina <span class="hl">grannar</span> om Ampy?</h2>
+      <p class="testimonial-c__subline">Riktiga omdömen från riktiga jobb. Ordagrant från Google.</p>
+    </div>
+    <div class="testimonial-c__proof">
+      <span class="stars" role="img" aria-label="Femstjärniga omdömen">
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
+      </span>
+      <span class="testimonial-c__proof-src"><img src="../shared/google-g.svg" alt="">Omdömen hämtade från Google</span><br>
+      <a class="testimonial-c__proof-link" href="#gap-google-profil">Läs alla omdömen</a>
+    </div>
+  </header>
+
+  <div class="wall" id="wall">
+    <div class="wall__row"><div class="wall__track" data-row="0"></div></div>
+    <div class="wall__row wall__row--reverse"><div class="wall__track" data-row="1"></div></div>
+  </div>
+
+</section>
+
+<script>
+/* Riktiga citat från ampy.se (Google-recensioner, ordagrant).
+   ⚑ [GAP] date-fälten är PLATSHÅLLARE — ersätt med riktiga datum från Google-profilen. */
+const REVIEWS = [
+  { name: "Filip", text: "Blev rekommenderad av en granne att gå via Ampy. Är otroligt nöjd med det valet!", date: "juni 2026" },
+  { name: "Thomas", text: "Behövde en elektriker för flera installationer hemma. Bra pris, snabb utryckning och hög kvalitet!", date: "juni 2026" },
+  { name: "Daniel", text: "Professionell firma! Oskar gjorde ett kanonjobb på uppfarten, var en annan firma här tidigare men dem klarade inte av det.", date: "maj 2026" },
+  { name: "Mathias", text: "Sökte en helhetslösning för hembatteri. Ampy levererade över förväntan. Snabbt, smidigt och tryggt!", date: "maj 2026" },
+  { name: "Kristoffer", text: "Bästa elektrikern vi anlitat! Otroligt noggranna med detaljerna och städade till och med efter sig. Mycket nöjd kund.", date: "april 2026" },
+  { name: "Adam", text: "Proffsig rådgivning inför vår installation. Känns tryggt att anlita experter.", date: "april 2026" },
+  { name: "Moa", text: "Snabb hjälp när elcentralen strulade. Ampy dök upp direkt och löste allt med högsta precision. Rekommenderas!", date: "mars 2026" },
+  { name: "Maria", text: "Hade hört gott om Ampy och de gjorde mig inte besviken. Kvalitet, transparens och bra pris i ett och samma paket!", date: "mars 2026" },
+  { name: "Josephine", text: "Fick hjälp med belysningen i hela lägenheten under min renovering. Väldigt nöjd.", date: "februari 2026" },
+  { name: "Sofia", text: "Jättebra och professionell service! Elektrikern förstod direkt vad som behövde göras och utförde arbetet effektivt och med mycket bra resultat.", date: "februari 2026" }
+];
+
+const STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>';
+const cardHTML = r => `
+  <figure class="card" style="margin:0">
+    <div class="card__head">
+      <figcaption class="card__name">${r.name}</figcaption>
+      <span class="card__date">${r.date}</span>
+      <img class="card__google" src="../shared/google-g.svg" alt="Google-omdöme">
+    </div>
+    <blockquote class="card__text" style="margin:0 0 var(--apspace-2xs)">${r.text}</blockquote>
+    <span class="card__stars" role="img" aria-label="5 av 5 stjärnor">${STAR.repeat(5)}</span>
+  </figure>`;
+
+/* Två rader; innehållet dubbleras för sömlös loop (dubbletterna aria-hidden). */
+const rows = [REVIEWS.filter((_, i) => i % 2 === 0), REVIEWS.filter((_, i) => i % 2 === 1)];
+document.querySelectorAll('.wall__track').forEach((track, i) => {
+  const set = rows[i].map(cardHTML).join('');
+  track.innerHTML = set + '<div aria-hidden="true" style="display:contents">' + set + '</div>';
+  track.style.setProperty('--drift-duration', (rows[i].length * 14) + 's');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="sv-SE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ampy Testimonials: 3 redesign-riktningar</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+html { box-sizing: border-box; } *, *::before, *::after { box-sizing: inherit; }
+body { margin: 0; font-family: 'Outfit', sans-serif; background: hsl(216 100% 98%); color: #090b32; padding: 48px 24px; }
+.wrap { max-width: 860px; margin: 0 auto; }
+h1 { font-size: 28px; font-weight: 600; margin: 0 0 4px; }
+p.lead { margin: 0 0 32px; font-weight: 300; color: rgba(9,11,50,.7); }
+a.opt { display: block; background: #fff; border-radius: 16px; padding: 24px 28px; margin-bottom: 16px;
+  text-decoration: none; color: inherit; box-shadow: 0 2px 12px rgba(9,11,50,.06); transition: box-shadow .2s ease, transform .2s ease; }
+a.opt:hover { box-shadow: 0 8px 24px rgba(9,11,50,.1); transform: translateY(-2px); }
+.opt h2 { margin: 0 0 6px; font-size: 20px; font-weight: 600; }
+.opt h2 span { color: #33995c; }
+.opt p { margin: 0; font-weight: 300; font-size: 15px; color: rgba(9,11,50,.72); }
+.note { margin-top: 32px; padding: 18px 22px; background: #fff8ec; border-radius: 12px; font-size: 14px; line-height: 1.6; color: #6b4e12; }
+.note strong { font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Testimonials: 3 redesign-riktningar</h1>
+  <p class="lead">Gemensamt: vita panelen borta, Evify-ramverket (rubrik ovan + proof under) i Ampy-DNA, datum + 5/5 på korten, 6s tempo. Baslinjen (1:1-klonen) ligger kvar i <a href="../build/index.html">../build/</a>.</p>
+
+  <a class="opt" href="a/index.html">
+    <h2>A: <span>Ren scen</span></h2>
+    <p>Närmast Evify-mallen. Centrerad tyngre rubrik med gradient-highlights + subline. Kort med citat-tecken, namn, delare och 5/5 + datum-meta. Ärlig paginering med alla prickar och en fungerande progress-bar. Proof-rad under: stjärnor + "Omdömen hämtade från Google" + länk.</p>
+  </a>
+
+  <a class="opt" href="b/index.html">
+    <h2>B: <span>Proof-först</span></h2>
+    <p>Aggregatet överst: Google-kicker-pill, rubrik "Grannar i hela Sverige har redan valt Ampy", proof-strip med medvetet OFYLLDA siffror (X,X av 5 · XXX omdömen, fylls efter din bekräftelse). Kort med initial-avatar + namn/datum-huvud. Pilar + ärlig fraktionsräknare (3 / 10). Mjuk CTA: "Boka en elektriker" → /offert/.</p>
+  </a>
+
+  <a class="opt" href="c/index.html">
+    <h2>C: <span>Väggen</span></h2>
+    <p>Störst avvikelse: ingen karusell. Två långsamt drivande rader i motsatta riktningar (paus på hover) visar alla omdömen; ingen paginering behövs. Rubrik vänster + proof-kolumn höger. Kompaktare kort, samma DNA. Reduced-motion ger statiska scrollbara rader.</p>
+  </a>
+
+  <div class="note">
+    <strong>⚑ Candour-gates före ship (alla versioner):</strong> (1) datum på korten är PLATSHÅLLARE. Ersätt med riktiga datum från Google-profilen; (2) aggregatsiffror i B är medvetet ofyllda tills du bekräftar dem; (3) "Läs alla omdömen"-länken behöver riktig Google-profil-URL; (4) Jonas är utelämnad tills hans fulltext-citat finns. Vald version mappas därefter till Bricks/FluentSnippets.
+  </div>
+</div>
+</body>
+</html>
