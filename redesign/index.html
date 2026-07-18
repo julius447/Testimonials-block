@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ampy Testimonials: 3 redesign-riktningar</title>
+<title>Ampy Testimonials: slutversion (A)</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 html { box-sizing: border-box; } *, *::before, *::after { box-sizing: inherit; }
@@ -11,38 +11,57 @@ body { margin: 0; font-family: 'Outfit', sans-serif; background: hsl(216 100% 98
 .wrap { max-width: 860px; margin: 0 auto; }
 h1 { font-size: 28px; font-weight: 600; margin: 0 0 4px; }
 p.lead { margin: 0 0 32px; font-weight: 300; color: rgba(9,11,50,.7); }
-a.opt { display: block; background: #fff; border-radius: 16px; padding: 24px 28px; margin-bottom: 16px;
+a.opt { display: block; background: #fff; border-radius: 16px; padding: 24px 28px; margin-bottom: 24px;
   text-decoration: none; color: inherit; box-shadow: 0 2px 12px rgba(9,11,50,.06); transition: box-shadow .2s ease, transform .2s ease; }
 a.opt:hover { box-shadow: 0 8px 24px rgba(9,11,50,.1); transform: translateY(-2px); }
 .opt h2 { margin: 0 0 6px; font-size: 20px; font-weight: 600; }
 .opt h2 span { color: #33995c; }
 .opt p { margin: 0; font-weight: 300; font-size: 15px; color: rgba(9,11,50,.72); }
-.note { margin-top: 32px; padding: 18px 22px; background: #fff8ec; border-radius: 12px; font-size: 14px; line-height: 1.6; color: #6b4e12; }
+h3 { font-size: 15px; font-weight: 600; margin: 28px 0 10px; }
+ul { margin: 0 0 24px; padding-left: 20px; }
+li { font-weight: 300; font-size: 14px; line-height: 1.7; color: rgba(9,11,50,.78); }
+li strong { font-weight: 600; }
+.note { padding: 18px 22px; background: #fff8ec; border-radius: 12px; font-size: 14px; line-height: 1.7; color: #6b4e12; }
 .note strong { font-weight: 600; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Testimonials: 3 redesign-riktningar</h1>
-  <p class="lead">Gemensamt: vita panelen borta, Evify-ramverket (rubrik ovan + proof under) i Ampy-DNA, datum + 5/5 på korten, 6s tempo. Baslinjen (1:1-klonen) ligger kvar i <a href="../build/index.html">../build/</a>.</p>
+  <h1>Testimonials: slutversion</h1>
+  <p class="lead">Version A vald (B och C borttagna per ägardirektiv 2026-07-19). Nedan den slutliga blocket med all feedback inarbetad och ett polish-pass från UX-, spacing- och copy-granskning.</p>
 
   <a class="opt" href="a/index.html">
-    <h2>A: <span>Ren scen</span></h2>
-    <p>Närmast Evify-mallen. Centrerad tyngre rubrik med gradient-highlights + subline. Kort med citat-tecken, namn, delare och 5/5 + datum-meta. Ärlig paginering med alla prickar och en fungerande progress-bar. Proof-rad under: stjärnor + "Omdömen hämtade från Google" + länk.</p>
+    <h2>Öppna slutversionen: <span>A</span></h2>
+    <p>Svart rubrik · kortad subline · centrerat, något större citat · snabbare rytm (5s) · Google-betyg-badge i stället för utgående länk · mobil med 4 kurerade omdömen. Rendera på desktop och mobil.</p>
   </a>
 
-  <a class="opt" href="b/index.html">
-    <h2>B: <span>Proof-först</span></h2>
-    <p>Aggregatet överst: Google-kicker-pill, rubrik "Grannar i hela Sverige har redan valt Ampy", proof-strip med medvetet OFYLLDA siffror (X,X av 5 · XXX omdömen, fylls efter din bekräftelse). Kort med initial-avatar + namn/datum-huvud. Pilar + ärlig fraktionsräknare (3 / 10). Mjuk CTA: "Boka en elektriker" → /offert/.</p>
-  </a>
+  <h3>Ägar-feedback inarbetad</h3>
+  <ul>
+    <li><strong>Rubrik svart</strong>, ingen gradient.</li>
+    <li>Subline bytt till <strong>"Riktiga omdömen från riktiga jobb."</strong></li>
+    <li>Citatet <strong>centrerat vertikalt</strong> (närmare mitten) och en gnutta större (17–19px).</li>
+    <li>Autoplay <strong>snabbare (5s)</strong>, med fungerande progress-bar på aktiv prick.</li>
+    <li>Proof-rad + "Läs alla omdömen"-länk <strong>ersatt av Google-betyg-badge</strong> (bifogat 2) — tar inte bort besökaren från sajten.</li>
+    <li>Mobil: <strong>4 kurerade omdömen</strong> (Filip/Daniel/Mathias/Moa) → max 4 prickar.</li>
+  </ul>
 
-  <a class="opt" href="c/index.html">
-    <h2>C: <span>Väggen</span></h2>
-    <p>Störst avvikelse: ingen karusell. Två långsamt drivande rader i motsatta riktningar (paus på hover) visar alla omdömen; ingen paginering behövs. Rubrik vänster + proof-kolumn höger. Kompaktare kort, samma DNA. Reduced-motion ger statiska scrollbara rader.</p>
-  </a>
+  <h3>Polish-pass (UX · spacing · copy · candour-granskning)</h3>
+  <ul>
+    <li>Stramare rytm: badgen sitter närmare prickarna (ojämnt gap fixat).</li>
+    <li>Prickar, kortförflyttning och progress-bar <strong>synkar nu 1:1</strong> (perMove = perPage).</li>
+    <li>Svenska aria-etiketter på pagineringen; <strong>44px touch-mål</strong> på prickarna.</li>
+    <li>Reduced-motion stänger av autoplay (inte bara animationen).</li>
+    <li>Redundant per-kort "5/5" borttaget (stjärnor + datum räcker); högre datum-kontrast.</li>
+    <li>Mobil-kortet ihopdraget (mindre svävande luft kring det centrerade citatet).</li>
+  </ul>
 
   <div class="note">
-    <strong>⚑ Candour-gates före ship (alla versioner):</strong> (1) datum på korten är PLATSHÅLLARE. Ersätt med riktiga datum från Google-profilen; (2) aggregatsiffror i B är medvetet ofyllda tills du bekräftar dem; (3) "Läs alla omdömen"-länken behöver riktig Google-profil-URL; (4) Jonas är utelämnad tills hans fulltext-citat finns. Vald version mappas därefter till Bricks/FluentSnippets.
+    <strong>⚑ Candour-gates före go-live (blockerare):</strong><br>
+    1. <strong>Badge "5 av 5 · Betyg på Google"</strong> står på foretagsdatas never-assert-lista. Får gå live först när du bekräftat att 5,0 är Ampys <strong>aktuella</strong> Google-snitt samma dag — siffran är statisk och bryts tyst av första recensionen under 5★. Sätt en bevaknings-/uppdateringsrutin.<br>
+    2. <strong>Datum på korten är platshållare</strong> ("juni 2026" osv.). Ersätt med riktiga datum från Google-profilen, annars är det fabricerad fakta.<br>
+    3. <strong>Per-kort 5 stjärnor</strong> är hårdkodade — bekräfta att varje visad recension genuint är 5★ (annars datadriv stjärnorna).<br>
+    4. <strong>Jonas</strong> utelämnad tills fulltext-citatet finns.<br>
+    5. Vald version mappas till <strong>Bricks/FluentSnippets</strong> för Chris efter din slutgiltiga OK.
   </div>
 </div>
 </body>
