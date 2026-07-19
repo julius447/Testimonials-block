@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ampy Testimonials: A/B-test 1 vs 2</title>
+<title>Ampy Testimonials — Version 1 (låst) + leverans</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 html { box-sizing: border-box; } *, *::before, *::after { box-sizing: inherit; }
@@ -11,33 +11,42 @@ body { margin: 0; font-family: 'Outfit', sans-serif; background: hsl(216 100% 98
 .wrap { max-width: 860px; margin: 0 auto; }
 h1 { font-size: 28px; font-weight: 600; margin: 0 0 4px; }
 p.lead { margin: 0 0 32px; font-weight: 300; color: rgba(9,11,50,.7); }
+.tag { display:inline-block; font-size:12px; font-weight:600; color:#007a37; background:#e4f6ea; border-radius:99px; padding:3px 10px; margin-left:8px; vertical-align:middle; }
 a.opt { display: block; background: #fff; border-radius: 16px; padding: 24px 28px; margin-bottom: 16px;
   text-decoration: none; color: inherit; box-shadow: 0 2px 12px rgba(9,11,50,.06); transition: box-shadow .2s ease, transform .2s ease; }
 a.opt:hover { box-shadow: 0 8px 24px rgba(9,11,50,.1); transform: translateY(-2px); }
 .opt h2 { margin: 0 0 6px; font-size: 20px; font-weight: 600; }
 .opt h2 span { color: #33995c; }
 .opt p { margin: 0; font-weight: 300; font-size: 15px; color: rgba(9,11,50,.72); }
+.muted a.opt { opacity:.62; }
 .note { margin-top: 28px; padding: 18px 22px; background: #fff8ec; border-radius: 12px; font-size: 14px; line-height: 1.7; color: #6b4e12; }
 .note strong { font-weight: 600; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Testimonials: A/B-test</h1>
-  <p class="lead">Två varianter att välja mellan. Gemensamt: 12 äkta Google-recensioner, sömlös oändlig loop, "5 av 5 Betyg på Google"-badge länkad till Google-profilen, paus vid hover.</p>
+  <h1>Testimonials <span class="tag">Version 1 låst</span></h1>
+  <p class="lead">A/B-testet är avgjort — Version 1 (prickar med fyllning) är vald och produktionssatt. Leveranspaketet (FluentSnippets CSS/PHP/JS + Bricks-JSON + dokumentation) ligger i <code>../delivery/</code>.</p>
 
   <a class="opt" href="a/index.html">
-    <h2>Test 1 — <span>Prickar med fyllning</span></h2>
-    <p>Nuvarande design, finslipad. Övre progress-linjen borttagen; den gröna fyllningen ligger nu på de 4 prickarna: aktiv prick fylls grönt över 4 sekunder och flyttar 1→2→3→4 och börjar om (cyklar genom alla 12). Prickarna är klickbara för manuell navigering. Alla 12 omdömen även på mobil.</p>
+    <h2>▶ Version 1 — <span>låst produktionsblock</span></h2>
+    <p>Prickar med grön fyllning (aktiv fylls i takt med korten, cyklar 1→2→3→4), sömlös oändlig loop, alla 12 äkta Google-recensioner, klickbar navigering, paus vid hover/fokus/touch, Google-betyg-badge. Laddar de levererade filerna. Byggd multi-instans-säker för 24/7 på flera landningssidor.</p>
   </a>
 
-  <a class="opt" href="b/index.html">
-    <h2>Test 2 — <span>Konstant marquee (Evify-stil)</span></h2>
-    <p>En rad kort som glider långsamt och konstant åt vänster, sömlös loop, pausar när man hovrar. Inga prickar, ingen progress-linje, ingen tidsbaserad bytesanimation — bara "5 av 5 Betyg på Google" under. Renare och lugnare.</p>
+  <a class="opt" href="../delivery/preview.html">
+    <h2>Leverans-preview — <span>exakt de shippade filerna</span></h2>
+    <p>Kör de tre FluentSnippets-filerna (CSS/JS + server-renderad markup) by reference. Se <code>../delivery/README.md</code> + <code>../delivery/docs/</code> för fullständig dokumentation (HTML/CSS/JS/PHP/Bricks).</p>
   </a>
+
+  <div class="muted">
+  <a class="opt" href="b/index.html">
+    <h2>Test 2 (ej vald) — <span>Evify-marquee</span></h2>
+    <p>Sparad som referens: konstant långsam scroll, ingen prick/linje. Ägaren valde Version 1.</p>
+  </a>
+  </div>
 
   <div class="note">
-    <strong>⚑ Candour-gates före go-live (gäller vald variant):</strong> (1) bekräfta att ingen av de 12 visade recensionerna är den enda 4-stjärniga av de 27; (2) spot-checka månadsdatumen mot Google-profilen; (3) rutin för att uppdatera "5 av 5" om snittet ändras. Därefter mappas vald variant till Bricks/FluentSnippets för Chris.
+    <strong>⚑ Candour-gates före go-live:</strong> (1) bekräfta att 5,0 är Ampys aktuella Google-snitt (bevakningsrutin); (2) spot-checka datumen mot profilen; (3) bekräfta att ingen av de 12 visade är den enda 4★ av 27. Se <code>../delivery/README.md</code>.
   </div>
 </div>
 </body>

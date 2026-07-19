@@ -1,0 +1,129 @@
+/* ============================================================================
+   AMPY TESTIMONIALS — produktions-CSS (FluentSnippets / Bricks)
+   Version 1 (låst 2026-07-19). ALLA selektorer WRAPPER-SCOPADE under
+   .ampy-testimonials så inget läcker ut i temat och inget annat block krockar.
+   Komponentreglerna ligger på .ampy-testimonials .att-* (specificitet 0,2,0) så
+   de alltid vinner över de defensiva element-resetsen (0,1,1).
+
+   BEROENDEN (finns globalt i Ampys Bricks-tema — importeras EJ här):
+   • Outfit (self-hostad i temat)  • html{font-size:62.5%} (1rem=10px)
+   • ap*-tokens + --brightgreen/--color-2/--radius/--apmidnight-blue m.fl.
+   Blocket gör AVSIKTLIGT inga externa font-requests och sätter aldrig html/body.
+   ============================================================================ */
+
+/* Wrapper: tokens + defensiva resets (skyddar mot att temat skriver över) */
+.ampy-testimonials {
+  --att-fill-a: var(--brightgreen, #1BD365);
+  --att-fill-b: #00ad48;
+  --att-card-text: clamp(1.7rem, calc(0.21vw + 1.63rem), 1.9rem);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  color: var(--apmidnight-blue, #090b32);
+  padding: var(--apspace-2xl, 6rem) var(--apspace-m, 2.4rem);
+  overflow: hidden;
+}
+.ampy-testimonials, .ampy-testimonials *, .ampy-testimonials *::before, .ampy-testimonials *::after { box-sizing: border-box; }
+.ampy-testimonials button { appearance: none; -webkit-appearance: none; font: inherit; color: inherit; }
+.ampy-testimonials figure, .ampy-testimonials blockquote, .ampy-testimonials figcaption { margin: 0; }
+.ampy-testimonials__inner { max-width: 1200px; margin: 0 auto; }
+
+/* Rubrik */
+.ampy-testimonials .att-head { text-align: center; max-width: 72rem; margin: 0 auto var(--apspace-l, 3.2rem); }
+.ampy-testimonials .att-heading {
+  margin: 0 0 var(--apspace-2xs, 0.9rem);
+  font-size: var(--aptext-2xl, 3.6rem); font-weight: 400;
+  letter-spacing: -0.01em; line-height: 1.15;
+  color: var(--apmidnight-blue, #090b32);
+}
+.ampy-testimonials .att-sub { margin: 0; font-size: var(--aptext-m, 1.8rem); font-weight: 300; color: rgba(9, 11, 50, 0.68); }
+
+/* Slider (Splide) */
+.ampy-testimonials .att-slider .splide__track { overflow: visible; }
+.ampy-testimonials .att-slider { padding-bottom: var(--apspace-2xs, 0.9rem); }
+.ampy-testimonials .splide__list { align-items: stretch; }
+
+/* Kort */
+.ampy-testimonials .att-card {
+  display: flex; flex-direction: column;
+  min-height: 360px; height: 100%;
+  padding: var(--apspace-m, 2.4rem) var(--apspace-m, 2.4rem) var(--apspace-l, 3.2rem);
+  border-radius: var(--radius, 16px);
+  background: linear-gradient(-27deg, #0b0f30 0%, #2d516d 60%);
+  color: #fff;
+  box-shadow: 0 0 16px 0 rgba(190, 190, 190, 0.14);
+  position: relative;
+}
+.ampy-testimonials .att-card__top { display: flex; align-items: center; justify-content: space-between; min-height: 2.4rem; }
+.ampy-testimonials .att-card__quote {
+  font-size: 5.6rem; line-height: 1; font-weight: 600;
+  color: var(--apneon-mint, #55ff9a); opacity: 0.55;
+  height: 2.4rem; margin-top: -0.4rem; user-select: none;
+}
+.ampy-testimonials .att-card__google { width: 22px; height: 22px; flex: 0 0 auto; }
+.ampy-testimonials .att-card__body { flex: 1 1 auto; display: flex; align-items: center; padding: var(--apspace-s, 1.6rem) 0; }
+.ampy-testimonials .att-card__text { font-size: var(--att-card-text); font-weight: 300; line-height: 1.5; color: rgba(255, 255, 255, 0.95); }
+.ampy-testimonials .att-card__foot { flex: 0 0 auto; }
+.ampy-testimonials .att-card__name { margin: 0 0 var(--apspace-2xs, 0.9rem); font-size: var(--aptext-ml, 2.2rem); font-weight: 600; }
+.ampy-testimonials .att-card__divider { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.14); margin: 0 0 var(--apspace-2xs, 0.9rem); }
+.ampy-testimonials .att-card__meta { display: flex; align-items: center; gap: 0.8rem; }
+.ampy-testimonials .att-card__stars { display: inline-flex; gap: 0.3rem; }
+.ampy-testimonials .att-card__stars svg { width: 15px; height: 15px; fill: var(--apneon-mint, #55ff9a); }
+.ampy-testimonials .att-card__date { margin-left: auto; font-size: var(--aptext-xs, 1.2rem); font-weight: 400; color: rgba(255, 255, 255, 0.72); }
+
+/* Navigering: 4 prickar, aktiv fylls grönt (cyklar via index % 4) */
+.ampy-testimonials .att-nav { display: flex; justify-content: center; gap: 0.8rem; margin-top: var(--apspace-s, 1.6rem); padding: 0.4rem 0; }
+.ampy-testimonials .att-dot {
+  width: 2.4rem; height: 0.6rem; border-radius: var(--apradius-full, 999rem);
+  background: #c7d3eb; border: none; cursor: pointer; padding: 0; margin: 0;
+  position: relative; overflow: visible;
+  transition: width .35s ease, background-color .35s ease;
+}
+/* Osynlig träffyta (mindre nedåt så den ej stjäl klick från badgen) */
+.ampy-testimonials .att-dot::before { content: ""; position: absolute; inset: -1.2rem -0.4rem; z-index: 2; }
+.ampy-testimonials .att-dot.is-active { width: 4.4rem; background: #cfe9d9; }
+.ampy-testimonials .att-dot__fill {
+  position: absolute; inset: 0; border-radius: inherit;
+  background: linear-gradient(90deg, var(--att-fill-a), var(--att-fill-b));
+  transform: scaleX(0); transform-origin: left center; will-change: transform;
+}
+.ampy-testimonials .att-dot:focus-visible { outline: 2px solid var(--apteal-core, #00a991); outline-offset: 4px; }
+
+/* Google-betyg (enda CTA:n) */
+.ampy-testimonials .att-rating { display: flex; justify-content: center; margin-top: var(--apspace-s, 1.6rem); position: relative; z-index: 3; }
+.ampy-testimonials .att-badge { display: inline-flex; align-items: center; gap: 1.1rem; min-height: 44px; padding: 0.8rem 1.2rem; text-decoration: none; color: inherit; cursor: pointer; }
+.ampy-testimonials .att-badge:hover .att-badge__text { text-decoration: underline; text-underline-offset: 4px; }
+.ampy-testimonials .att-badge:focus-visible { outline: 2px solid var(--apteal-core, #00a991); outline-offset: 3px; border-radius: var(--apradius-full, 999rem); }
+.ampy-testimonials .att-badge__stars { display: inline-flex; gap: 0.4rem; }
+.ampy-testimonials .att-badge__stars svg { width: 18px; height: 18px; fill: #fbbc04; filter: drop-shadow(0 0 .5px rgba(9, 11, 50, 0.55)); }
+.ampy-testimonials .att-badge__text { font-size: var(--aptext-m, 1.8rem); font-weight: 300; color: var(--apmidnight-blue, #090b32); white-space: nowrap; }
+.ampy-testimonials .att-badge__text strong { font-weight: 600; margin-right: 0.9rem; }
+
+.ampy-testimonials :focus:not(:focus-visible) { outline: none; }
+
+/* Tablet 760–1024: 2-upp */
+@media (max-width: 1024px) and (min-width: 760px) {
+  .ampy-testimonials { padding: var(--apspace-xl, 4.4rem) var(--apspace-m, 2.4rem); }
+  .ampy-testimonials .att-card { min-height: 340px; }
+}
+/* Kompakt 1-upp ≤759: ingen subline, lättare rubrik, fullbredds-kort */
+@media (max-width: 759px) {
+  .ampy-testimonials { padding: var(--apspace-xl, 4.4rem) var(--apspace-s, 1.6rem); }
+  .ampy-testimonials .att-heading { font-size: clamp(2.3rem, 6.4vw, 2.7rem); font-weight: 400; }
+  .ampy-testimonials .att-sub { display: none; }
+  .ampy-testimonials .att-head { margin-bottom: 3.2rem; }
+  .ampy-testimonials .att-card { min-height: 300px; }
+  .ampy-testimonials .att-card__body { padding: var(--apspace-xs, 1.2rem) 0; }
+  .ampy-testimonials .att-badge__stars svg { width: 17px; height: 17px; }
+  .ampy-testimonials .att-badge__text { font-size: var(--aptext-sm, 1.6rem); }
+}
+/* Reduced-motion: JS stänger autoplay; prick-tillväxten görs momentan */
+@media (prefers-reduced-motion: reduce) {
+  .ampy-testimonials .att-dot { transition: none; }
+}
+/* Print: mörka kort blir oläsbara på vitt → invertera */
+@media print {
+  .ampy-testimonials .att-card { background: #fff !important; color: #111 !important; box-shadow: none; border: 1px solid #ddd; }
+  .ampy-testimonials .att-card__text, .ampy-testimonials .att-card__name { color: #111 !important; }
+  .ampy-testimonials .att-card__quote { color: #999 !important; }
+  .ampy-testimonials .att-nav, .ampy-testimonials .att-dot { display: none !important; }
+}
