@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="sv-SE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ampy Testimonials — A/B-test 2 (konstant marquee)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/tokens.css">
+<style>
+/* ============================================================
+   A/B-TEST 2 — Evify-stil: långsam KONSTANT marquee (ägar-feedback 2026-07-19)
+   - En rad, alla kort glider långsamt och konstant åt vänster, sömlös loop
+     (kort-settet dubblerat → wrappar utan hopp). PAUSAR vid hover.
+   - INGA prickar, INGEN progress-linje, ingen tidsbaserad "byt"-animation.
+   - Enda indikatorn under: "5 av 5 Betyg på Google" (renare design).
+   - Kanterna tonar ut (mask). Reduced-motion: statisk, horisontellt scrollbar.
+   ⚑ Betyg 5,0 · 27 recensioner ägar-bekräftat 2026-07-19.
+   ============================================================ */
+html { font-size: 62.5%; box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+body {
+  margin: 0;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  font-size: var(--aptext-sm);
+  background: var(--color-2, hsl(216 100% 98%));
+  color: var(--apmidnight-blue);
+  -webkit-font-smoothing: antialiased;
+}
+
+.testimonial-b { padding: var(--apspace-2xl) 0; overflow: hidden; }
+.testimonial-b__header { text-align: center; max-width: 72rem; margin: 0 auto var(--apspace-l); padding: 0 var(--apspace-m); }
+.testimonial-b__heading {
+  margin: 0 0 var(--apspace-2xs);
+  font-size: var(--aptext-2xl); font-weight: 400;
+  letter-spacing: -0.01em; line-height: 1.15;
+  color: var(--apmidnight-blue);
+}
+.testimonial-b__subline { margin: 0; font-size: var(--aptext-m); font-weight: 300; color: rgba(9, 11, 50, 0.68); }
+
+/* --- Marquee --- */
+.marquee {
+  overflow: hidden;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.marquee__track {
+  display: flex; width: max-content;
+  padding: 1.6rem 0;                     /* rum för kortens skugga */
+  animation: marquee var(--dur, 80s) linear infinite;
+  will-change: transform;
+}
+.marquee:hover .marquee__track,
+.marquee:focus-within .marquee__track,
+.marquee.is-paused .marquee__track { animation-play-state: paused; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* Paus/spela-kontroll (WCAG 2.2.2 — behövs för touch + tangentbord) */
+.marquee-toggle {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  margin: var(--apspace-s) auto 0; padding: 0.6rem 1.2rem;
+  background: none; border: none; cursor: pointer; font-family: inherit;
+  font-size: var(--aptext-s); font-weight: 400; color: rgba(9, 11, 50, 0.5);
+  border-radius: var(--apradius-full); transition: color .2s ease;
+}
+.testimonial-b__controls { display: flex; justify-content: center; padding: 0 var(--apspace-m); }
+.marquee-toggle:hover, .marquee-toggle:focus-visible { color: var(--apmidnight-blue); outline: none; }
+.marquee-toggle svg { width: 13px; height: 13px; fill: currentColor; }
+.marquee-toggle .icon-play { display: none; }
+.marquee-toggle.is-paused .icon-pause { display: none; }
+.marquee-toggle.is-paused .icon-play { display: inline; }
+
+/* --- Kortet (samma DNA, fast bredd för marquee-matten) --- */
+.card {
+  flex: 0 0 auto;
+  width: 380px; margin-right: 24px;      /* margin (ej gap) → -50% blir exakt */
+  display: flex; flex-direction: column;
+  height: 390px;                          /* fast höjd → jämna kort, inget tomrum-kaos från Jans långa citat */
+  padding: var(--apspace-m) var(--apspace-m) var(--apspace-l);
+  border-radius: var(--radius);
+  background: linear-gradient(-27deg, #0b0f30 0%, #2d516d 60%);
+  color: #fff;
+  box-shadow: 0 0 16px 0 rgba(190, 190, 190, 0.14);
+  position: relative;
+}
+.card__top { display: flex; align-items: center; justify-content: space-between; min-height: 2.4rem; }
+.card__quote-mark {
+  font-size: 5.6rem; line-height: 1; font-weight: 600;
+  color: var(--apneon-mint); opacity: 0.55;
+  height: 2.4rem; margin-top: -0.4rem; user-select: none;
+}
+.card__google { width: 22px; height: 22px; flex: 0 0 auto; }
+.card__body { flex: 1 1 auto; display: flex; align-items: center; padding: var(--apspace-s) 0; }
+.card__text {
+  margin: 0; font-size: clamp(1.7rem, calc(0.21vw + 1.63rem), 1.9rem); font-weight: 300;
+  line-height: 1.5; color: rgba(255, 255, 255, 0.95);
+}
+.card__foot { flex: 0 0 auto; }
+.card__name { margin: 0 0 var(--apspace-2xs); font-size: var(--aptext-ml); font-weight: 600; }
+.card__divider { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.14); margin: 0 0 var(--apspace-2xs); }
+.card__meta { display: flex; align-items: center; gap: 0.8rem; }
+.card__stars { display: inline-flex; gap: 0.3rem; }
+.card__stars svg { width: 15px; height: 15px; fill: var(--apneon-mint); }
+.card__date { margin-left: auto; font-size: var(--aptext-xs); font-weight: 400; color: rgba(255, 255, 255, 0.72); }
+
+/* --- Google-betyg (enda indikatorn) --- */
+.testimonial-b__rating { display: flex; justify-content: center; margin-top: var(--apspace-l); padding: 0 var(--apspace-m); }
+.rating-badge {
+  display: inline-flex; align-items: center; gap: 1.1rem;
+  min-height: 44px; padding: 0.8rem 1.2rem;
+  text-decoration: none; color: inherit; cursor: pointer;
+}
+.rating-badge:hover .rating-badge__text { text-decoration: underline; text-underline-offset: 4px; }
+.rating-badge__stars { display: inline-flex; gap: 0.4rem; }
+.rating-badge__stars svg { width: 18px; height: 18px; fill: #fbbc04; }
+.rating-badge__text { font-size: var(--aptext-m); font-weight: 300; color: var(--apmidnight-blue); white-space: nowrap; }
+.rating-badge__text strong { font-weight: 600; margin-right: 0.9rem; }
+
+@media (max-width: 759px) {
+  .testimonial-b { padding: var(--apspace-xl) 0; }
+  .testimonial-b__heading { font-size: clamp(2.3rem, 6.4vw, 2.7rem); }
+  .testimonial-b__subline { display: none; }
+  .testimonial-b__header { margin-bottom: 3.2rem; }
+  .card { width: 300px; margin-right: 16px; height: 380px; }
+  .rating-badge__stars svg { width: 17px; height: 17px; }
+  .rating-badge__text { font-size: var(--aptext-sm); }
+}
+
+/* Respektera reduced-motion: ingen rörelse, gör raden scrollbar istället.
+   Dölj då dubbletterna (annars syns varje omdöme två gånger vid scroll) och
+   göm paus-knappen (inget att pausa). */
+@media (prefers-reduced-motion: reduce) {
+  .marquee { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .marquee__track { animation: none; }
+  .marquee__track > .card[aria-hidden="true"] { display: none; }
+  .testimonial-b__controls { display: none; }
+}
+</style>
+</head>
+<body>
+
+<section class="testimonial-b" aria-label="Omdömen från Ampys kunder">
+
+  <header class="testimonial-b__header">
+    <h2 class="testimonial-b__heading">Vad säger dina grannar om Ampy?</h2>
+    <p class="testimonial-b__subline">Riktiga omdömen från riktiga jobb.</p>
+  </header>
+
+  <div class="marquee" id="marquee" tabindex="0" role="group" aria-label="Kundomdömen, rör sig i sidled">
+    <div class="marquee__track" id="track"><!-- kort injiceras (× 2) av JS --></div>
+  </div>
+
+  <div class="testimonial-b__controls">
+    <button class="marquee-toggle" id="marquee-toggle" type="button" aria-pressed="false">
+      <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+      <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      <span class="marquee-toggle__label">Pausa</span>
+    </button>
+  </div>
+
+  <div class="testimonial-b__rating">
+    <a class="rating-badge"
+       href="https://www.google.com/maps/place/Ampy/@59.3576299,17.9842061,17z/data=!3m1!4b1!4m6!3m5!1s0x2bec1ce5c4ed9ce9:0xfce1752e84a1bfee!8m2!3d59.3576272!4d17.986781!16s%2Fg%2F11ypjy9rrm"
+       target="_blank" rel="noopener noreferrer" aria-label="Läs Ampys omdömen på Google, öppnas i ny flik">
+      <span class="rating-badge__stars" role="img" aria-label="5 av 5 stjärnor">
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>
+      </span>
+      <span class="rating-badge__text"><strong>5 av 5</strong>Betyg på Google</span>
+    </a>
+  </div>
+
+</section>
+
+<script>
+/* ÄKTA Google-recensioner, ordagrant (ägarens lista 2026-07-19). Jan Fernström #2. */
+const REVIEWS = [
+  { name: "Filip Eriksson", text: "Blev rekommenderad av en granne att gå via Ampy. Är otroligt nöjd med det valet.", date: "mars 2026" },
+  { name: "Jan Fernström", text: "Ampy visade sig i konkurrens med andra aktörer både kunnigare och billigare. Genomförandet av offererat arbete skedde inom utlovad tid snabbt och utan problem. Följdfrågor som uppstått efter en tids användning har besvarats kunnigt och utan dröjsmål.", date: "juni 2026" },
+  { name: "Daniel Hellström", text: "Professionell firma! Oskar gjorde ett kanonjobb på uppfarten, var en annan firma här tidigare men dem klarade inte av det.", date: "mars 2026" },
+  { name: "Mohammed Abduljaleel", text: "Kan verkligen rekommendera Ampy. Trevlig kontakt, punktliga och noggranna. Arbetet blev riktigt bra och priset var rimligt. Kommer definitivt att anlita dom igen i framtiden.", date: "juni 2026" },
+  { name: "Alexandra Kamona", text: "Vi är supernöjda med de som installerade vår elbox! Väldigt proffsiga och trevliga att ha att göra med. Rekommenderas varmt!", date: "maj 2026" },
+  { name: "Mathias Franzen", text: "Sökte en helhetslösning för hembatteri. Ampy levererade över förväntan. Snabbt, smidigt och tryggt!", date: "mars 2026" },
+  { name: "Moa Olaussen", text: "Snabb hjälp när elcentralen strulade. Ampy dök upp direkt och löste allt med högsta precision. Rekommenderas!", date: "mars 2026" },
+  { name: "Sofia Hamren", text: "Jättebra och professionell service! Elektrikern förstod direkt vad som behövde göras och utförde arbetet effektivt och med mycket bra resultat. Rekommenderas!", date: "april 2026" },
+  { name: "Hugo Grafström Olsson", text: "Från start till mål levererades en service i världsklass!", date: "mars 2026" },
+  { name: "Josephine Lundqvist", text: "Fick hjälp med belysningen i hela lägenheten under min renovering. Väldigt nöjd.", date: "maj 2026" },
+  { name: "dany Hanna", text: "Supernöjd, bra gäng, trevliga pålitliga och snabba.", date: "juni 2026" },
+  { name: "Adam Andersson", text: "Proffsig rådgivning inför vår installation. Känns tryggt att anlita experter.", date: "mars 2026" }
+];
+
+const STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17l-6.2 3.9 1.6-7L2 9.2l7.1-.6z"/></svg>';
+const cardHTML = (r, hidden) => `
+  <figure class="card"${hidden ? ' aria-hidden="true"' : ''}>
+    <div class="card__top">
+      <span class="card__quote-mark" aria-hidden="true">“</span>
+      <img class="card__google" src="../shared/google-g.svg" alt="${hidden ? '' : 'Google-omdöme'}">
+    </div>
+    <div class="card__body">
+      <blockquote class="card__text" style="margin:0">${r.text}</blockquote>
+    </div>
+    <figcaption class="card__foot">
+      <div class="card__name">${r.name}</div>
+      <hr class="card__divider">
+      <div class="card__meta">
+        <span class="card__stars" role="img" aria-label="${hidden ? '' : '5 av 5 stjärnor'}">${STAR.repeat(5)}</span>
+        <span class="card__date">${r.date}</span>
+      </div>
+    </figcaption>
+  </figure>`;
+
+const track = document.getElementById('track');
+/* Två identiska set (andra aria-hidden) → -50% wrappar sömlöst. */
+const setHTML = REVIEWS.map(r => cardHTML(r, false)).join('');
+const dupHTML = REVIEWS.map(r => cardHTML(r, true)).join('');
+track.innerHTML = setHTML + dupHTML;
+
+/* Konstant hastighet oavsett skärm: duration = ETT sets bredd / målhastighet.
+   Långsammare på mobil (35 px/s) så man hinner läsa; desktop 55 px/s (Evify-likt). */
+const speedFor = () => window.matchMedia('(max-width: 759px)').matches ? 35 : 55;
+function setDuration() {
+  const cards = track.querySelectorAll('.card');
+  if (!cards.length) return;
+  const cardW = cards[0].getBoundingClientRect().width + parseFloat(getComputedStyle(cards[0]).marginRight);
+  const setWidth = cardW * REVIEWS.length;
+  track.style.setProperty('--dur', (setWidth / speedFor()) + 's');
+}
+setDuration();
+let rt;
+window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(setDuration, 150); });
+
+/* Paus/spela — WCAG 2.2.2 (touch + tangentbord). Plus tap-to-pause på touch. */
+const marquee = document.getElementById('marquee');
+const toggle = document.getElementById('marquee-toggle');
+const toggleLabel = toggle.querySelector('.marquee-toggle__label');
+function setPaused(p) {
+  marquee.classList.toggle('is-paused', p);
+  toggle.classList.toggle('is-paused', p);
+  toggle.setAttribute('aria-pressed', String(p));
+  toggleLabel.textContent = p ? 'Spela' : 'Pausa';
+}
+toggle.addEventListener('click', () => setPaused(!marquee.classList.contains('is-paused')));
+/* Tap på korten (endast touch) pausar/spelar — hover täcker mus, knappen täcker tangentbord. */
+marquee.addEventListener('pointerdown', e => {
+  if (e.pointerType === 'touch') setPaused(!marquee.classList.contains('is-paused'));
+});
+</script>
+</body>
+</html>
