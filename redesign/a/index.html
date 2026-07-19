@@ -290,10 +290,13 @@ function build() {
   if (splide) splide.destroy(true);
   list.innerHTML = data.map(slideHTML).join('');
   splide = new Splide(sliderEl, {
-    type: 'slide', perPage: mobile ? 1 : 3, perMove: 1, gap: '24px',
+    /* type:'loop' = SÖMLÖS oändlig loop: Splide klonar korten så den wrappar
+       runt utan hopp. Tar aldrig slut, börjar om av sig själv (inget 'rewind'-
+       hopp längre). Byt 1 kort i taget (perMove 1). */
+    type: 'loop', perPage: mobile ? 1 : 3, perMove: 1, gap: '24px',
     autoplay: !reduce, interval: INTERVAL, speed: SPEED,
     pauseOnHover: true, pauseOnFocus: true, resetProgress: false,
-    rewind: true, arrows: false, pagination: true,
+    arrows: false, pagination: true,
     mediaQuery: 'max', i18n: I18N,
     breakpoints: mobile ? {} : { 1024: { perPage: 2 } }
   }).mount();
